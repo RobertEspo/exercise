@@ -1,0 +1,7 @@
+Future updates that have no particular order of priority.
+
+> Update graphs/models etc. to include forearms.
+
+> Update graphs/models for partner data. If I go with two or more people, need to separately count it as going with a group for some models/viz AND count it as going with each individual. Eg if I go with Jon and Luis, need to count it as one item "Jon_and_Luis" (eg for  01_model_partner_weight) as well as separate counts "Jon" and "Luis" (eg for 02_viz_most_frequent_partner).
+
+> Generate models that use new "protein" col in data.
