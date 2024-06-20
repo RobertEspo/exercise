@@ -11,8 +11,10 @@ source(here::here("scripts", "00_libs.R"))
 
 # -----------------------------------------------------------------------------
 
+### load data
+
 # load data with relevant cols
-routine <- range_read('1H8w_d53ZHczs8-gAtDsIfAlJnH07GHnZUi0Leh_dyOQ') %>%
+compound_lifts <- routine %>%
   transmute(
     exercise,
     set_number = factor(set_number),
@@ -21,23 +23,30 @@ routine <- range_read('1H8w_d53ZHczs8-gAtDsIfAlJnH07GHnZUi0Leh_dyOQ') %>%
     reps_completed
   )
 
+
+### create dfs for each lift
+
 # create df for bench
-bench_press <- routine %>%
+bench_press <- compound_lifts %>%
   filter(
     exercise == "bench_press"
   )
 
 # create df for squat
-squat <- routine %>%
+squat <- compound_lifts %>%
   filter(
     exercise == "squat_barbell"
   )
 
 # create df for deadlift
-deadlift <- routine %>%
+deadlift <- compound_lifts %>%
   filter(
     exercise == "deadlift"
   )
+
+
+### 2D viz for each lift
+### floating numbers are # of reps
 
 # bench press viz
 bench_press_viz <- bench_press %>%
@@ -56,7 +65,7 @@ bench_press_viz <- bench_press %>%
     x = "Date",
     y = "Weight (lbs)",
     color = "Set number"
-  )
+  ) 
 bench_press_viz
 
 # squat viz
@@ -95,4 +104,57 @@ deadlift_viz <- deadlift %>%
     x = "Date",
     y = "Weight (lbs)",
     color = "Set number"
+  )
+
+### 3D viz for each lift
+
+# bench press viz
+plot_ly(bench_press,
+        x = ~date, 
+        y = ~reps_completed, 
+        z = ~weight,
+        color = ~factor(set_number), 
+        type = "scatter3d", 
+        mode = "lines+markers") %>%
+  layout(scene = list(
+    xaxis = list(title = "Date"),
+    yaxis = list(title = "Reps Completed", autorange = "reversed", 
+                 tickmode = "linear", tick0 = 0, dtick = 1),
+    zaxis = list(title = "Weight (lbs)")
+  ),
+  legend = list(title = list(text = "Set Number"))
+  )
+
+# squat viz
+plot_ly(squat,
+        x = ~date, 
+        y = ~reps_completed, 
+        z = ~weight,
+        color = ~factor(set_number), 
+        type = "scatter3d", 
+        mode = "lines+markers") %>%
+  layout(scene = list(
+    xaxis = list(title = "Date"),
+    yaxis = list(title = "Reps Completed", autorange = "reversed", 
+                 tickmode = "linear", tick0 = 0, dtick = 1),
+    zaxis = list(title = "Weight (lbs)")
+  ),
+  legend = list(title = list(text = "Set Number"))
+  )
+
+# deadlift viz
+plot_ly(deadlift,
+        x = ~date, 
+        y = ~reps_completed, 
+        z = ~weight,
+        color = ~factor(set_number), 
+        type = "scatter3d", 
+        mode = "lines+markers") %>%
+  layout(scene = list(
+    xaxis = list(title = "Date"),
+    yaxis = list(title = "Reps Completed", autorange = "reversed", 
+                 tickmode = "linear", tick0 = 0, dtick = 1),
+    zaxis = list(title = "Weight (lbs)")
+  ),
+  legend = list(title = list(text = "Set Number"))
   )

@@ -11,7 +11,7 @@ source(here::here("scripts", "00_libs.R"))
 # -----------------------------------------------------------------------------
 
 # load data with relevant cols
-routine <- range_read('1H8w_d53ZHczs8-gAtDsIfAlJnH07GHnZUi0Leh_dyOQ') %>%
+muscle_groups <- routine %>%
   transmute(
     muscle_group,
     exercise = factor(exercise),
@@ -21,7 +21,7 @@ routine <- range_read('1H8w_d53ZHczs8-gAtDsIfAlJnH07GHnZUi0Leh_dyOQ') %>%
   )
 
 # create dfs for each muscle group
-muscle_group_dfs <- split(routine, routine$muscle_group)
+muscle_group_dfs <- split(muscle_groups, muscle_groups$muscle_group)
 
 for (muscle_group_name in names(muscle_group_dfs)) {
   assign(muscle_group_name, muscle_group_dfs[[muscle_group_name]])

@@ -10,8 +10,9 @@ source(here::here("scripts", "00_libs.R"))
 
 # -----------------------------------------------------------------------------
 
-# load partner data
-routine <- range_read('1H8w_d53ZHczs8-gAtDsIfAlJnH07GHnZUi0Leh_dyOQ') %>%
+# select day, partner cols
+# rename partner col from codes to names
+partners <- routine %>%
   select(
     day,
     partner
@@ -22,7 +23,8 @@ routine <- range_read('1H8w_d53ZHczs8-gAtDsIfAlJnH07GHnZUi0Leh_dyOQ') %>%
                             ifelse(partner == 2, "Jordan",
                                    ifelse(partner == 3, "Jon",
                                           ifelse(partner == 4, "Jon_and_Jordan", 
-                                                 ifelse(partner == 5, "Jon_and_Luis", NA)))))),
+                                                 ifelse(partner == 5, "Jon_and_Luis",
+                                                        ifelse(partner == 6, "Luis", NA))))))),
     partner = factor(partner),
     day
   ) %>%
@@ -30,11 +32,11 @@ routine <- range_read('1H8w_d53ZHczs8-gAtDsIfAlJnH07GHnZUi0Leh_dyOQ') %>%
   summarize(num_sets = n())
 
 # frequentist model num_sets ~ partner
-fit_f <- glm(num_sets ~ partner, data = routine, family = poisson)
+fit_f <- glm(num_sets ~ partner, data = partners, family = poisson)
 summary(fit_f)
 
 # bayesian model
-fit_b <- brm(num_sets ~ partner, data = routine, family = poisson)
+fit_b <- brm(num_sets ~ partner, data = partners, family = poisson)
 summary(fit_b)
 
 # forest plot

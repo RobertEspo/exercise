@@ -19,7 +19,8 @@ time <- range_read('1H8w_d53ZHczs8-gAtDsIfAlJnH07GHnZUi0Leh_dyOQ', sheet = "time
   )
 
 # load partner data
-partner <- range_read('1H8w_d53ZHczs8-gAtDsIfAlJnH07GHnZUi0Leh_dyOQ') %>%
+# select date, partner cols
+partner <- routine %>%
   select(
     date,
     partner
@@ -31,7 +32,8 @@ partner <- range_read('1H8w_d53ZHczs8-gAtDsIfAlJnH07GHnZUi0Leh_dyOQ') %>%
                             ifelse(partner == 2, "Jordan",
                                    ifelse(partner == 3, "Jon",
                                           ifelse(partner == 4, "Jon_and_Jordan",
-                                                 ifelse(partner == 5, "Jon_and_Luis", NA)))))),
+                                                 ifelse(partner == 5, "Jon_and_Luis",
+                                                        ifelse(partner == 6, "Luis", NA))))))),
     date
   )
 
@@ -71,7 +73,8 @@ as_tibble(fit_b) %>%
     cristian = b_Intercept + b_partnerCristian,
     jon = b_Intercept + b_partnerJon,
     jordan = b_Intercept + b_partnerJordan,
-    jon_and_luis = b_Intercept + b_partnerJon_and_Luis
+    jon_and_luis = b_Intercept + b_partnerJon_and_Luis,
+    luis = b_Intercept + b_partnerLuis
   ) %>%
   # pivot_longer() so ggplot can read it
   pivot_longer(everything(), names_to = "partner", values_to = "estimate") %>%

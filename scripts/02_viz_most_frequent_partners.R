@@ -10,9 +10,9 @@ source(here::here("scripts", "00_libs.R"))
 
 # -----------------------------------------------------------------------------
 
-# load data and select cols
+# select day, partner cols
 # rename values from codes to partner names
-routine <- range_read('1H8w_d53ZHczs8-gAtDsIfAlJnH07GHnZUi0Leh_dyOQ') %>%
+partners <- routine %>%
   select(
     day,
     partner
@@ -30,12 +30,12 @@ routine <- range_read('1H8w_d53ZHczs8-gAtDsIfAlJnH07GHnZUi0Leh_dyOQ') %>%
   )
 
 # partner counts in df
-partner_counts <- routine %>%
+partner_counts <- partners %>%
   group_by(partner) %>%
   summarize(count = n())
 
 # bar plot partner counts
-partner_counts <- routine %>% ggplot(
+partner_counts <- partners %>% ggplot(
   aes(x = partner)
 ) +
   geom_bar()
