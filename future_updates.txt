@@ -7,3 +7,7 @@ Future updates that have no particular order of priority.
 > Generate models that use new "protein" col in data.
 
 > Generate models that use cardio & swimming
+
+> Need to fix 09_viz_compound_lifts_predicted_prog.R. The way I have it right now doesn't really make sense because it takes the most recent lift of each compound exercise instead of 1rm.
+
+> 08_viz_1rm_compound_lifts isn't good. Averages all the data, which makes it underestimate 1RM because it pays equal attention to older lifts and newer lifts.
