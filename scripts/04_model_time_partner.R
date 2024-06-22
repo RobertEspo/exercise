@@ -12,7 +12,7 @@ source(here("scripts","01_load_data.R"))
 # -----------------------------------------------------------------------------
 
 # load time spent at gym data 
-time <- range_read('1H8w_d53ZHczs8-gAtDsIfAlJnH07GHnZUi0Leh_dyOQ', sheet = "time") %>%
+time <- time %>%
   na.omit() %>%
   select(
     total_time,

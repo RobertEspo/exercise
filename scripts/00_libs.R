@@ -7,7 +7,4 @@ library('ggdist')
 library('googlesheets4')
 library('ggrepel')
 library('plotly')
-library('shiny')
-library("shinylive")
-library("httpuv")
 # -----------------------------------------------------------------------------
