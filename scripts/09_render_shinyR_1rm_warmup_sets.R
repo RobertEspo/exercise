@@ -10,5 +10,5 @@ source(here::here("scripts", "00_libs.R"))
 
 # -----------------------------------------------------------------------------
 shinylive::export(appdir = "shinyR_1rm_warmup_sets", 
-                  destdir = here("shinyR_1rm_warmup_sets","docs")
+                  destdir = "docs"
 )
