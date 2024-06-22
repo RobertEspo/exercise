@@ -6,8 +6,8 @@
 
 # Source libs -----------------------------------------------------------------
 
-source(here::here("scripts", "00_libs.R"))
-source(here("scripts","01_load_data.R"))
+source(here::here("scripts", "00_helper_libs.R"))
+source(here("scripts","01_helper_load_data.R"))
 
 # -----------------------------------------------------------------------------
 
@@ -64,6 +64,8 @@ chest_viz <- chest %>%
                   color = "black") +
   labs(title = "Chest Exercise Performance",
        y = "Weight (lbs)")
+
+chest_viz
 
 ### TRICEPS ### 
 
@@ -265,7 +267,7 @@ first_points_shoulders <- shoulders %>%
   slice_min(date) %>%
   filter(set_number == min(set_number))
 
-# back exercise performance viz
+# shoulders exercise performance viz
 shoulders_viz <- shoulders %>%
   ggplot(
     aes(
@@ -285,4 +287,41 @@ shoulders_viz <- shoulders %>%
                   size = 3,
                   color = "black") +
   labs(title = "Shoulders Exercise Performance",
+       y = "Weight (lbs)")
+
+### FOREARMS ###
+
+# find first point for each exercise
+# to label them on the graph with name
+first_points_forearms <- forearms %>%
+  transmute(
+    exercise,
+    set_number = as.numeric(set_number),
+    date,
+    weight
+  ) %>%
+  group_by(exercise) %>%
+  slice_min(date) %>%
+  filter(set_number == min(set_number))
+
+# forearms exercise performance viz
+forearms_viz <- forearms %>%
+  ggplot(
+    aes(
+      x = date, 
+      y = weight, 
+      color = exercise, 
+      group = interaction(exercise, set_number),
+    )
+  ) +
+  geom_point(size = 3,
+             alpha = 0.4) +
+  geom_line() +
+  geom_text_repel(data = first_points_forearms,
+                  aes(label = exercise),
+                  box.padding = 0.5,
+                  point.padding = 0.1,
+                  size = 3,
+                  color = "black") +
+  labs(title = "Forearms Exercise Performance",
        y = "Weight (lbs)")

@@ -2,14 +2,14 @@
 #
 # - Predict and visualize one rep max 
 # - for compound lifts bench press, squats, and deadlifts
-# - as well as warm up sets
+# - as well as warm up sets.
 #
 # -----------------------------------------------------------------------------
 
 # Source libs -----------------------------------------------------------------
 
-source(here::here("scripts", "00_libs.R"))
-source(here("scripts","01_load_data.R"))
+source(here::here("scripts", "00_helper_libs.R"))
+source(here("scripts","01_helper_load_data.R"))
 
 # -----------------------------------------------------------------------------
 
@@ -18,22 +18,33 @@ compound_lifts <- routine %>%
   # select exercise, set number, weight, reps completed
   transmute(
     exercise,
-    set_number = factor(set_number),
     weight,
-    reps_completed
+    reps_completed,
+    gym_day_count,
   ) %>%
   # filter for compound lifts
   filter(
-    exercise %in% c("bench_press","squat_barbell","deadlift")
+    exercise %in% c("bench_press","squat_barbell","deadlift"),
+    # filter to make sure no failed attempts are included
+    reps_completed > 0
   ) %>%
 # add one_rep_max col using Epley formula
 # 1rm = w(1 + r/30)
 # w = weight, r = # of reps completed
   mutate(
-    one_rep_max = (reps_completed * weight * 0.0333) + weight
+    # Bryzcki formula
+    # one_rep_max = weight / (1.0278 - 0.0278 * reps_completed),
+    
+    # Epley formula
+    one_rep_max = (reps_completed * weight * 0.0333) + weight,
+    
+    # add col for statistical weights
+    # if reps_completed == 1, it will have a high weight
+    # otherwise, earlier days will have lower weights
+    stat_weights = ifelse(reps_completed == 1, 10, 1 / gym_day_count)
   ) %>%
   group_by(exercise) %>%
-  summarize(one_rep_max_average = mean(one_rep_max, na.rm = TRUE))
+  summarize(one_rep_max_average = weighted.mean(one_rep_max, w = stat_weights))
 
 ### warm up sets for one rep maxes
 

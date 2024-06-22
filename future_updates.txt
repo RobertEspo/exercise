@@ -1,13 +1,20 @@
 Future updates that have no particular order of priority.
 
-> Update graphs/models etc. to include forearms.
+> Update graphs/models for partner data. If I go with two or more people, need to separately count it as going with a group for some models/viz AND count it as going with each individual. Eg if I go with Jon and Luis, need to count it as one item "Jon_and_Luis" (eg for  01_model_partner_weight.R) as well as separate counts "Jon" and "Luis" (eg for 02_viz_most_frequent_partner.R).
 
-> Update graphs/models for partner data. If I go with two or more people, need to separately count it as going with a group for some models/viz AND count it as going with each individual. Eg if I go with Jon and Luis, need to count it as one item "Jon_and_Luis" (eg for  01_model_partner_weight) as well as separate counts "Jon" and "Luis" (eg for 02_viz_most_frequent_partner).
+> Generate models and viz that use new "protein" tracking data.
 
-> Generate models that use new "protein" col in data.
+> Generate models that use "weight_stats" eg muscle mass, fat %, body weight
 
-> Generate models that use cardio & swimming
+> Generate models and viz that use cardio & swimming
 
-> Need to fix 09_viz_compound_lifts_predicted_prog.R. The way I have it right now doesn't really make sense because it takes the most recent lift of each compound exercise instead of 1rm.
+> 08_viz_1rm_compound_lifts.R
+>> For some reason, it accurately predicts my 1RM for bench and deadlift, but underestimates it for squat. I think this is because I have been undershooting squats by a lot. In a few weeks, I'll come back and see if it better estimates the 1RM.
 
-> 08_viz_1rm_compound_lifts isn't good. Averages all the data, which makes it underestimate 1RM because it pays equal attention to older lifts and newer lifts.
+> 09_viz_compound_lifts_predicted_prog.R. 
+>> The way I have it right now doesn't really make sense because it takes the most recent lift of each compound exercise instead of 1rm.
+>> It also doesn't make any prediction beyond adding 2.5lbs or 5.0lbs each week.
+>> Would be cool to add a model so that it actually predicts increasing weight over time.
+
+> 05_model_num_exercises_partner.R
+>> Right now, the dataframe isn't set up correctly to actually capture the desired model.

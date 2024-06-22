@@ -6,8 +6,8 @@
 
 # Source libs -----------------------------------------------------------------
 
-source(here::here("scripts", "00_libs.R"))
-source(here::here("scripts", "01_load_data.R"))
+source(here::here("scripts", "00_helper_libs.R"))
+source(here::here("scripts", "01_helper_load_data.R"))
 
 # -----------------------------------------------------------------------------
 
@@ -24,7 +24,7 @@ weight_and_muscle <- weight_stats %>% select(
   values_to = "values"
 )
 
-# viz weight and muscle mass over time
+# viz lean body mass, muscle mass, body weight over time
 viz_weight_muscle <- weight_and_muscle %>% ggplot(aes(
   x = date,
   y = values,
@@ -39,6 +39,6 @@ viz_weight_muscle <- weight_and_muscle %>% ggplot(aes(
     color = "Measurement"
   ) +
   scale_color_manual(
-    labels = c("Lead Body Mass", "Muscle Mass", "Body Weight"),
+    labels = c("Lean Body Mass", "Muscle Mass", "Body Weight"),
     values = c("blue", "red", "green")
   )

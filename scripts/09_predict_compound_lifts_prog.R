@@ -1,14 +1,14 @@
 # Visual for predicted progress on compound lifts -----------------------------
 #
-# - Predicted progress for compound lifts based on one rep max.
+# - Predicted working set progress for compound lifts based on one rep max.
 # - Probably very unrealistic as it gets further along.
 #
 # -----------------------------------------------------------------------------
 
 # Source libs -----------------------------------------------------------------
 
-source(here::here("scripts", "00_libs.R"))
-source(here::here("scripts", "01_load_data.R"))
+source(here::here("scripts", "00_helper_libs.R"))
+source(here::here("scripts", "01_helper_load_data.R"))
 
 # -----------------------------------------------------------------------------
 
@@ -119,3 +119,5 @@ viz_pp <- predicted_progress %>%
   )) +
   geom_line() +
   geom_point()
+
+viz_pp
