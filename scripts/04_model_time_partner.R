@@ -12,37 +12,14 @@ source(here("scripts","01_helper_load_data.R"))
 # -----------------------------------------------------------------------------
 
 # load time spent at gym data 
-time <- time %>%
+time_partner <- time %>%
   na.omit() %>%
-  select(
-    total_time,
-    date
-  )
-
-# load partner data
-# select date, partner cols
-partner <- routine %>%
-  select(
-    date,
-    partner
+  # change partner ID codes to names
+  left_join(partner_key, by = c("partner_id" = "partner_id")
   ) %>%
-  distinct(date, .keep_all = TRUE) %>%
   transmute(
-    partner = ifelse(partner == 0, "alone",
-                     ifelse(partner == 1, "Cristian",
-                            ifelse(partner == 2, "Jordan",
-                                   ifelse(partner == 3, "Jon",
-                                          ifelse(partner == 4, "Jon_and_Jordan",
-                                                 ifelse(partner == 5, "Jon_and_Luis",
-                                                        ifelse(partner == 6, "Luis", NA))))))),
-    date
-  )
-
-# join dfs by date column & factor partner col
-time_partner <- left_join(time, partner, by = "date") %>%
-  transmute(
-    partner = factor(partner),
-    total_time = as.character(total_time)
+    total_time = total_time,
+    partner = factor(partner)
   )
 
 # convert hh:mm to mm

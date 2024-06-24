@@ -17,7 +17,7 @@ weights <- routine %>%
   # factor partner column
   transmute(
     scaled_weights = as.vector(scale(weight)),
-    partner = factor(partner)
+    partner = factor(partner_id)
   )
   
 # frequentist model

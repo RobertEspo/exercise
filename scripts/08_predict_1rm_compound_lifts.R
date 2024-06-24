@@ -48,6 +48,18 @@ compound_lifts <- routine %>%
 
 ### warm up sets for one rep maxes
 
+# function to add col of warm up set weights
+warm_up_sets <- function(df, one_rep_max_mean) {
+  df %>%
+    mutate(
+      weight = c(0.5 * one_rep_max_mean, 
+                 0.6 * one_rep_max_mean,
+                 0.75 * one_rep_max_mean,
+                 0.85 * one_rep_max_mean,
+                 one_rep_max_mean)
+    )
+}
+
 ## bench press
 
 # extract one rep max prediction
@@ -59,13 +71,9 @@ bench_mean <- compound_lifts %>%
 bench <- data.frame(
   exercise = "bench_press",
   set_num = seq(1,5,1),
-  weight = c(0.5 * bench_mean, 
-             0.6 * bench_mean,
-             0.75 * bench_mean,
-             0.85 * bench_mean,
-             bench_mean),
   reps = factor(c(10, 5, 3, 2, 1))
-)
+) %>%
+  warm_up_sets(.,bench_mean)
 
 ## squat
 
@@ -78,13 +86,9 @@ squat_mean <- compound_lifts %>%
 squat <- data.frame(
   exercise = "squat_barbell",
   set_num = seq(1,5,1),
-  weight = c(0.5 * squat_mean, 
-             0.6 * squat_mean,
-             0.75 * squat_mean,
-             0.85 * squat_mean,
-             squat_mean),
   reps = factor(c(10, 5, 3, 2, 1))
-)
+) %>%
+  warm_up_sets(.,squat_mean)
 
 ## deadlift
 
@@ -97,13 +101,9 @@ deadlift_mean <- compound_lifts %>%
 deadlift <- data.frame(
   exercise = "deadlift",
   set_num = seq(1,5,1),
-  weight = c(0.5 * deadlift_mean, 
-             0.6 * deadlift_mean,
-             0.75 * deadlift_mean,
-             0.85 * deadlift_mean,
-             deadlift_mean),
   reps = factor(c(10, 5, 3, 2, 1))
-)
+) %>%
+  warm_up_sets(.,deadlift_mean)
 
 ### join warm up sets dfs
 warm_up_sets <- bind_rows(deadlift, squat, bench)

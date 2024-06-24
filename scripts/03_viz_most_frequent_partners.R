@@ -10,33 +10,20 @@ source(here::here("scripts", "00_helper_libs.R"))
 source(here("scripts","01_helper_load_data.R"))
 
 # -----------------------------------------------------------------------------
-
-# select day, partner cols
-# rename values from codes to partner names
-partners <- routine %>%
+partners_freq_viz <- routine %>%
   select(
-    day,
-    partner
+    date,
+    partner_id
   ) %>%
-  distinct(day, .keep_all = TRUE) %>%
-  transmute(
-    partner = ifelse(partner == 0, "alone",
-                     ifelse(partner == 1, "Cristian",
-                            ifelse(partner == 2, "Jordan",
-                                   ifelse(partner == 3, "Jon",
-                                          ifelse(partner == 4, "Jon_and_Jordan", 
-                                                 ifelse(partner == 5, "Jon_and_Luis",
-                                                        ifelse(partner == 6, "Luis", NA))))))),
-    day
-  )
-
-# partner counts in df
-partner_counts <- partners %>%
+  distinct(date, .keep_all = TRUE) %>%
+  # change partner ID codes to names
+  left_join(partner_key, by = c("partner_id" = "partner_id")
+            ) %>%
   group_by(partner) %>%
-  summarize(count = n())
+  summarize(count = n()) %>%
+  ggplot(
+    aes(x = partner, y = count)
+    ) +
+  geom_bar(stat ="identity")
 
-# bar plot partner counts
-partner_counts <- partners %>% ggplot(
-  aes(x = partner)
-) +
-  geom_bar()
+partners_freq_viz

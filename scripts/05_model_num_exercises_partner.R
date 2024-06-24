@@ -1,3 +1,7 @@
+### WARNING
+### THIS SCRIPT SEES WHO I DO THE MOST SETS WITH
+### NOT THE MOST EXERCISES
+
 # num exercises versus partner--------------------------------------------------
 #
 # - See who I do the most exercises with
@@ -13,31 +17,33 @@ source(here("scripts","01_helper_load_data.R"))
 
 # select day, partner cols
 # rename partner col from codes to names
-partners <- routine %>%
+partners_exercises <- routine %>%
+  na.omit() %>%
   select(
     day,
-    partner
+    partner_id,
+    exercise
+  ) %>%
+  # change partner ID codes to names
+  left_join(partner_key, by = c("partner_id" = "partner_id")
   ) %>%
   transmute(
-    partner = ifelse(partner == 0, "alone",
-                     ifelse(partner == 1, "Cristian",
-                            ifelse(partner == 2, "Jordan",
-                                   ifelse(partner == 3, "Jon",
-                                          ifelse(partner == 4, "Jon_and_Jordan", 
-                                                 ifelse(partner == 5, "Jon_and_Luis",
-                                                        ifelse(partner == 6, "Luis", NA))))))),
+    # remember that col name "partner" comes from df "partner_key"
     partner = factor(partner),
-    day
+    day = factor(day),
+    exercise
   ) %>%
   group_by(partner,day) %>%
-  summarize(num_sets = n())
+  summarize(num_exercises = n_distinct(exercise))
 
 # frequentist model num_sets ~ partner
-fit_f <- glm(num_sets ~ partner, data = partners, family = poisson)
+fit_f <- glm(num_exercises ~ partner, 
+             data = partners_exercises, family = poisson)
 summary(fit_f)
 
 # bayesian model
-fit_b <- brm(num_sets ~ partner, data = partners, family = poisson)
+fit_b <- brm(num_exercises ~ partner, 
+             data = partners_exercises, family = poisson)
 summary(fit_b)
 
 # forest plot

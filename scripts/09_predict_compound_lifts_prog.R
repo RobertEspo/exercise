@@ -1,3 +1,6 @@
+# THIS NEEDS TO BE UDPATED
+# CURRENTLY DOES NOT PRODUCE DATA THAT I ACTUALLY WANT
+
 # Visual for predicted progress on compound lifts -----------------------------
 #
 # - Predicted working set progress for compound lifts based on one rep max.
@@ -13,7 +16,7 @@ source(here::here("scripts", "01_helper_load_data.R"))
 # -----------------------------------------------------------------------------
 
 # remove na values
-max <- one_rep_max %>%
+max <- compound_1rm_weekly %>%
   na.omit()
 
 # function to round to nearest multiple
